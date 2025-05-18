@@ -29,7 +29,7 @@ public class Registro {
         return rid;
     }
 
-    public void setKid(Integer rid) {
+    public void setRid(Integer rid) {
         this.rid = rid;
     }
 
@@ -42,7 +42,7 @@ public class Registro {
     }
 
     public Integer getMid() {
-        return uid;
+        return mid;
     }
 
     public void setMid(Integer mid) {
@@ -60,7 +60,7 @@ public class Registro {
     // Método toString para debug
     @Override
     public String toString() {
-        return "Chaveiro{" +
+        return "Registro{" +
                 "kid=" + rid +
                 ", uid=" + uid +
                 ", mid=" + mid +
