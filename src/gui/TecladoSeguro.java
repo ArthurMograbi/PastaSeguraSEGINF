@@ -6,7 +6,7 @@ import java.util.Random;
 
 
 public class TecladoSeguro extends JFrame {
-    private java.util.List<String> pressedButtons = new java.util.ArrayList<>();
+    private java.util.List<String[]> pressedButtons = new java.util.ArrayList<>();
     private JLabel asterisksLabel = new JLabel("", SwingConstants.CENTER);
     
     public TecladoSeguro() {
@@ -30,8 +30,7 @@ public class TecladoSeguro extends JFrame {
             if(i==3){ // Botão OKAY
                 buttons[i] = new JButton("OKAY");
                 buttons[i].addActionListener(e -> {
-                    pressedButtons.add("OKAY");
-                    updateAsterisks();
+                    // Send pressed buttons IMPLEMENTAR
                 });
                 keypad.add(buttons[i]);
             } else if(i==6){  // Espaço Vazio
@@ -47,11 +46,12 @@ public class TecladoSeguro extends JFrame {
             } else{
                 result = escolheDois(digits);
                 digits = result[1];
-                String btnLabel = result[0][0]+" AND "+result[0][1];
+                String btnLabel = result[0][0]+" E "+result[0][1];
                 buttons[i]= new JButton(btnLabel) ;
-                String labelCopy = btnLabel;
+                String[] selNum = new String[]{result[0][0], result[0][1]};
+
                 buttons[i].addActionListener(e -> {
-                    pressedButtons.add(labelCopy);
+                    pressedButtons.add(selNum);
                     updateAsterisks();
                 });
                 keypad.add(buttons[i]);
@@ -60,6 +60,15 @@ public class TecladoSeguro extends JFrame {
         add(keypad, BorderLayout.SOUTH);
         
         setVisible(true);
+    }
+
+    public java.util.List<String> getPossiblePresses() {
+        java.util.List<String> possiblePresses = new java.util.ArrayList<>();
+        for (String[] pair : pressedButtons) {
+            //possiblePresses.ex
+        }
+        return possiblePresses;
+
     }
 
     private String[][] escolheDois(String[] numbers) {
