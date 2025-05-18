@@ -30,7 +30,7 @@ public class TecladoSeguro extends JFrame {
             if(i==3){ // Botão OKAY
                 buttons[i] = new JButton("OKAY");
                 buttons[i].addActionListener(e -> {
-                    // Send pressed buttons IMPLEMENTAR
+                    System.out.println(getPossiblePresses());
                 });
                 keypad.add(buttons[i]);
             } else if(i==6){  // Espaço Vazio
@@ -66,6 +66,17 @@ public class TecladoSeguro extends JFrame {
         java.util.List<String> possiblePresses = new java.util.ArrayList<>();
         for (String[] pair : pressedButtons) {
             //possiblePresses.ex
+            if(possiblePresses.isEmpty()){
+                possiblePresses.add(pair[0]);
+                possiblePresses.add(pair[1]);
+            } else {
+                java.util.List<String> temp = new java.util.ArrayList<>(possiblePresses);
+                for (int i = 0; i < possiblePresses.size(); i++) {
+                    possiblePresses.set(i, possiblePresses.get(i) + pair[0]);
+                    temp.set(i, temp.get(i) + pair[1]);
+                }
+                possiblePresses.addAll(temp);
+            }
         }
         return possiblePresses;
 
