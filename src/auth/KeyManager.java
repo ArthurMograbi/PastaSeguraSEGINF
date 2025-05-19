@@ -20,7 +20,7 @@ import javax.crypto.spec.GCMParameterSpec;
 
 public class KeyManager {
 
-private static final String AES_ALGORITHM = "AES";
+private static final String ALGORITHM = "AES";
 private static final String CIPHER_TRANSFORMATION = "AES/GCM/NoPadding"; // Usando GCM para maior segurança
 private static final String KEY_GENERATION_ALGORITHM = "PBKDF2WithHmacSHA256";
 private static final String PRNG_ALGORITHM = "SHA1PRNG";
@@ -29,13 +29,18 @@ private static final int IV_SIZE = 12; // Tamanho do IV para GCM
 private static final int TAG_BIT_LENGTH = 128; // Tamanho da tag de autenticação para GCM
 private static final int SALT_LENGTH = 16;
 private static final int ITERATION_COUNT = 65536;
+public KeyPair keyPair;
 
-public static void generateAndEncryptPrivateKey(String password, String outputFilePath) throws Exception {
+public KeyManager() {
+    this.keyPair = null;
+}
+
+public void generateAndEncryptPrivateKey(String password, String outputFilePath) throws Exception {
     // 1. Gerar um par de chaves RSA
     KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
     keyPairGenerator.initialize(2048);
-    KeyPair keyPair = keyPairGenerator.generateKeyPair();
-    PrivateKey privateKey = keyPair.getPrivate();
+    this.keyPair = keyPairGenerator.generateKeyPair();
+    PrivateKey privateKey = this.keyPair.getPrivate();
 
     // 2. Obter a representação PKCS#8 da chave privada e codificá-la em Base64
     byte[] privateKeyEncoded = privateKey.getEncoded();
@@ -112,24 +117,25 @@ private static SecretKey generateKeyFromPassword(String password, byte[] salt) t
             ITERATION_COUNT,
             KEY_SIZE
     );
-    return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), AES_ALGORITHM);
+    return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), ALGORITHM);
 }
 
 public static void main(String[] args) {
     String password = "minhaSenhaSecreta"; // Substitua pela senha do usuário
-    String outputFilePath = "privateKey.enc";
-    String inputFilePath = "privateKey.enc"; // Usando o mesmo arquivo para demonstração
+    String outputFilePath = "index.enc";
+    String inputFilePath = "index.enc"; // Usando o mesmo arquivo para demonstração
 
+    KeyManager keyManager = new KeyManager();
     try {
         // Gerar, criptografar e salvar a chave privada
-        generateAndEncryptPrivateKey(password, outputFilePath);
+        keyManager.generateAndEncryptPrivateKey(password, outputFilePath);
 
         // Descriptografar e restaurar a chave privada
         PrivateKey restoredPrivateKey = decryptAndRestorePrivateKey(password, inputFilePath);
         System.out.println("\nChave privada restaurada com sucesso!");
         System.out.println("Algoritmo da chave privada: " + restoredPrivateKey.getAlgorithm());
         System.out.println("Formato da chave privada: " + restoredPrivateKey.getFormat());
-
+        System.out.println("Keypair"+keyManager.keyPair);
     } catch (Exception e) {
         System.err.println("Ocorreu um erro: " + e.getMessage());
         e.printStackTrace();

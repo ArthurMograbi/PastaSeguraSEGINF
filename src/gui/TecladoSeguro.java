@@ -65,7 +65,6 @@ public class TecladoSeguro extends JFrame {
     public java.util.List<String> getPossiblePresses() {
         java.util.List<String> possiblePresses = new java.util.ArrayList<>();
         for (String[] pair : pressedButtons) {
-            //possiblePresses.ex
             if(possiblePresses.isEmpty()){
                 possiblePresses.add(pair[0]);
                 possiblePresses.add(pair[1]);
